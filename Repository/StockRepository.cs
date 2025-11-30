@@ -11,12 +11,12 @@ public class StockRepository(ApplicationDBContext context) : IStockRepository
     
     public async Task<ICollection<Stock>> GetAllAsync()
     {
-       return await context.Stocks.ToListAsync();
+       return await context.Stocks.Include(s => s.Comments).ToListAsync();
     }
 
      public async Task<Stock?> GetByIdAsync(int id)
     {
-        return await context.Stocks.FirstOrDefaultAsync(x => x.Id == id);
+        return await context.Stocks.Include(s => s.Comments).FirstOrDefaultAsync(s => s.Id == id);
     }
 
     public async Task<Stock> CreateAsync(Stock stock)
@@ -59,5 +59,10 @@ public class StockRepository(ApplicationDBContext context) : IStockRepository
         await context.SaveChangesAsync();
         
         return stock;
+    }
+
+    public Task<bool> ExistsAsync(int id)
+    {
+        return context.Stocks.AnyAsync(s => s.Id == id);
     }
 }

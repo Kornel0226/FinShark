@@ -1,3 +1,5 @@
+using FinShark.Dtos.Comment;
+
 namespace FinShark.Dtos.Stock;
 
 public class StockDto
@@ -15,5 +17,7 @@ public class StockDto
     public string Industry { get; set; } = string.Empty;
 
     public long MarketCap { get; set; }
+    
+    public ICollection<CommentDto> Comments { get; set; }
     
 }
